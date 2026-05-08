@@ -1051,10 +1051,8 @@ function ppFail(uid, attemptedUrl) {
   const isDrive  = attemptedUrl.includes('drive.google.com');
   let hintHtml = '';
   if (isGitHub) {
-    if (fsub) fsub.textContent = 'GitHub image failed';
-    hintHtml = `Make sure your GitHub repository is set to <strong>Public</strong>.<br>
-      Use a <strong>raw</strong> link:
-      <code>https://raw.githubusercontent.com/USER/REPO/main/photo.jpg</code>`;
+    if (fsub) fsub.textContent = 'Upload image please';
+    hintHtml = `Contact HR to Upload Your Passport Please`;
   } else if (isDrive) {
     if (fsub) fsub.textContent = 'Google Drive image failed';
     hintHtml = `The file must be shared as <strong>"Anyone with the link"</strong>.<br>
