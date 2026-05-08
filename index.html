@@ -8,155 +8,560 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-    /* Your existing CSS - keeping it compact for response length */
+    /* ═══════════════════════════════════════════════════
+       DESIGN TOKENS
+    ═══════════════════════════════════════════════════ */
     :root {
-      --navy-950: #040d1e; --navy-900: #0a1f44; --navy-800: #0d2856;
-      --navy-700: #103470; --navy-600: #1a4494; --navy-400: #3a6abf;
-      --navy-200: #8aaee0; --navy-100: #c5d8f5; --navy-50: #eef4ff;
-      --gold-500: #0bf6cf; --gold-400: #0bf6cf; --gold-300: #0bf6cf;
-      --green-700: #0a6e3e; --green-500: #0e9455; --green-50: #edfaf3;
-      --red-700: #9a1428; --red-500: #c41e35; --red-50: #0de097;
-      --amber-100: #0de097; --white: #ffffff; --gray-50: #f8fafc;
-      --gray-100: #f0f3f9; --gray-200: #dde3f0; --gray-300: #bbc5dc;
-      --gray-400: #8896b3; --gray-500: #5e6e8c;
-      --font-d: 'Barlow Condensed', sans-serif;
-      --font-b: 'Poppins', sans-serif;
+      --navy-950 : #040d1e;
+      --navy-900 : #0a1f44;
+      --navy-800 : #0d2856;
+      --navy-700 : #103470;
+      --navy-600 : #1a4494;
+      --navy-400 : #3a6abf;
+      --navy-200 : #8aaee0;
+      --navy-100 : #c5d8f5;
+      --navy-50  : #eef4ff;
+      --gold-500 : #0bf6cf;
+      --gold-400 : #0bf6cf;
+      --gold-300 : #0bf6cf;
+      --green-700: #0a6e3e;
+      --green-500: #0e9455;
+      --green-50 : #edfaf3;
+      --red-700  : #9a1428;
+      --red-500  : #c41e35;
+      --red-50   : #0de097;
+      --amber-100: #0de097;
+      --white    : #ffffff;
+      --gray-50  : #f8fafc;
+      --gray-100 : #f0f3f9;
+      --gray-200 : #dde3f0;
+      --gray-300 : #bbc5dc;
+      --gray-400 : #8896b3;
+      --gray-500 : #5e6e8c;
+      --font-d   : 'Barlow Condensed', sans-serif;
+      --font-b   : 'Poppins', sans-serif;
       --r-sm: 6px; --r-md: 12px; --r-lg: 20px; --r-xl: 28px;
       --sh-md: 0 6px 24px rgba(4,13,30,.18);
       --sh-lg: 0 16px 48px rgba(4,13,30,.25);
       --sh-xl: 0 30px 80px rgba(4,13,30,.35);
-      --ease: cubic-bezier(.22,1,.36,1);
+      --ease  : cubic-bezier(.22,1,.36,1);
       --spring: cubic-bezier(.34,1.56,.64,1);
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { font-size: 16px; scroll-behavior: smooth; }
+    html { font-size: 16px; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
     body {
-      font-family: var(--font-b); background: var(--navy-950); color: var(--white);
-      min-height: 100vh; display: flex; flex-direction: column; align-items: center;
+      font-family: var(--font-b);
+      background: var(--navy-950);
+      color: var(--white);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       overflow-x: hidden;
     }
-    .bg-base { position: fixed; inset: 0; z-index: 0; background: radial-gradient(ellipse 110% 70% at 50% -5%, rgba(16,52,112,.55) 0%, transparent 65%), radial-gradient(ellipse 60% 50% at 5% 110%, rgba(10,31,68,.7) 0%, transparent 55%), radial-gradient(ellipse 50% 60% at 95% 100%, rgba(10,31,68,.5) 0%, transparent 55%), linear-gradient(180deg, #060f24 0%, #040d1e 40%, #020810 100%); }
-    .bg-grid { position: fixed; inset: 0; z-index: 1; pointer-events: none; background-image: linear-gradient(rgba(255,255,255,.022) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.022) 1px, transparent 1px); background-size: 48px 48px; }
-    .bg-diag { position: fixed; top: 0; right: 0; width: 500px; height: 500px; z-index: 1; pointer-events: none; background-image: repeating-linear-gradient(-45deg, transparent, transparent 28px, rgba(201,145,58,.04) 28px, rgba(201,145,58,.04) 29px); }
-    .bg-diag2 { position: fixed; bottom: 0; left: 0; width: 350px; height: 350px; z-index: 1; pointer-events: none; background-image: repeating-linear-gradient(45deg, transparent, transparent 28px, rgba(26,68,148,.05) 28px, rgba(26,68,148,.05) 29px); }
-    .bg-glow { position: fixed; top: -200px; left: 50%; transform: translateX(-50%); width: 1000px; height: 600px; z-index: 1; pointer-events: none; background: radial-gradient(ellipse, rgba(26,68,148,.2) 0%, transparent 70%); }
-    .page { position: relative; z-index: 10; width: 100%; max-width: 920px; padding: 44px 24px 72px; display: flex; flex-direction: column; align-items: center; gap: 28px; }
-    .sys-bar { width: 100%; display: flex; align-items: center; justify-content: space-between; animation: fromTop .6s var(--ease) both; }
-    .sys-left { display: flex; align-items: center; gap: 7px; font-family: var(--font-d); font-size: 10px; font-weight: 600; letter-spacing: 3px; color: var(--navy-400); text-transform: uppercase; }
-    .dot-live { width: 7px; height: 7px; border-radius: 50%; background: var(--green-500); box-shadow: 0 0 8px var(--green-500); animation: dotBlink 2.5s ease-in-out infinite; }
-    @keyframes dotBlink { 0%,100%{ opacity:1; box-shadow:0 0 8px var(--green-500); } 50%{ opacity:.5; box-shadow:0 0 3px var(--green-500); } }
-    .sys-right { font-family: var(--font-d); font-size: 10px; letter-spacing: 3px; color: var(--navy-400); }
-    .header { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 20px; animation: fromTop .7s .06s var(--ease) both; }
-    .emblem-wrap { position: relative; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center; }
-    .emblem-wrap::before { content: ''; position: absolute; inset: 0; border-radius: 50%; border: 1.5px dashed rgba(201,145,58,.45); animation: spinRing 22s linear infinite; }
-    .emblem-wrap::after { content: ''; position: absolute; inset: 7px; border-radius: 50%; border: 1px solid rgba(201,145,58,.18); }
+    /* ── LAYERED BACKGROUND ──────────────────────────── */
+    .bg-base {
+      position: fixed; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse 110% 70% at 50% -5%, rgba(16,52,112,.55) 0%, transparent 65%),
+        radial-gradient(ellipse 60% 50% at 5% 110%,  rgba(10,31,68,.7)   0%, transparent 55%),
+        radial-gradient(ellipse 50% 60% at 95% 100%, rgba(10,31,68,.5)   0%, transparent 55%),
+        linear-gradient(180deg, #060f24 0%, #040d1e 40%, #020810 100%);
+    }
+    .bg-grid {
+      position: fixed; inset: 0; z-index: 1; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,.022) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.022) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+    .bg-diag {
+      position: fixed; top: 0; right: 0; width: 500px; height: 500px;
+      z-index: 1; pointer-events: none;
+      background-image: repeating-linear-gradient(
+        -45deg, transparent, transparent 28px,
+        rgba(201,145,58,.04) 28px, rgba(201,145,58,.04) 29px);
+    }
+    .bg-diag2 {
+      position: fixed; bottom: 0; left: 0; width: 350px; height: 350px;
+      z-index: 1; pointer-events: none;
+      background-image: repeating-linear-gradient(
+        45deg, transparent, transparent 28px,
+        rgba(26,68,148,.05) 28px, rgba(26,68,148,.05) 29px);
+    }
+    .bg-glow {
+      position: fixed; top: -200px; left: 50%; transform: translateX(-50%);
+      width: 1000px; height: 600px; z-index: 1; pointer-events: none;
+      background: radial-gradient(ellipse, rgba(26,68,148,.2) 0%, transparent 70%);
+    }
+    /* ── PAGE LAYOUT ─────────────────────────────────── */
+    .page {
+      position: relative; z-index: 10;
+      width: 100%; max-width: 920px;
+      padding: 44px 24px 72px;
+      display: flex; flex-direction: column; align-items: center; gap: 28px;
+    }
+    /* ── SYSTEM BAR ──────────────────────────────────── */
+    .sys-bar {
+      width: 100%; display: flex; align-items: center; justify-content: space-between;
+      animation: fromTop .6s var(--ease) both;
+    }
+    .sys-left {
+      display: flex; align-items: center; gap: 7px;
+      font-family: var(--font-d); font-size: 10px; font-weight: 600;
+      letter-spacing: 3px; color: var(--navy-400); text-transform: uppercase;
+    }
+    .dot-live {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--green-500); box-shadow: 0 0 8px var(--green-500);
+      animation: dotBlink 2.5s ease-in-out infinite;
+    }
+    @keyframes dotBlink {
+      0%,100%{ opacity:1; box-shadow:0 0 8px var(--green-500); }
+      50%    { opacity:.5; box-shadow:0 0 3px var(--green-500); }
+    }
+    .sys-right {
+      font-family: var(--font-d); font-size: 10px; letter-spacing: 3px; color: var(--navy-400);
+    }
+    /* ── HEADER ──────────────────────────────────────── */
+    .header {
+      width: 100%; display: flex; flex-direction: column; align-items: center; gap: 20px;
+      animation: fromTop .7s .06s var(--ease) both;
+    }
+    .emblem-wrap {
+      position: relative; width: 100px; height: 100px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .emblem-wrap::before {
+      content: ''; position: absolute; inset: 0; border-radius: 50%;
+      border: 1.5px dashed rgba(201,145,58,.45);
+      animation: spinRing 22s linear infinite;
+    }
+    .emblem-wrap::after {
+      content: ''; position: absolute; inset: 7px; border-radius: 50%;
+      border: 1px solid rgba(201,145,58,.18);
+    }
     @keyframes spinRing { to { transform: rotate(360deg); } }
-    .emblem-core { width: 74px; height: 74px; border-radius: 50%; position: relative; z-index: 2; background: linear-gradient(145deg, var(--navy-800), var(--navy-900) 60%, #050e22); border: 2.5px solid rgba(58, 201, 137, 0.65); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 2px rgba(8, 249, 133, 0.1), 0 8px 32px rgba(4,13,30,.7), inset 0 1px 0 rgba(7, 237, 157, 0.07); }
-    .emblem-letters { font-family: var(--font-d); font-weight: 800; font-size: 26px; letter-spacing: 2px; color: var(--gold-300); text-shadow: 0 0 24px rgba(240,192,96,.35); line-height: 1; }
-    .hd-eyebrow { font-family: var(--font-d); font-size: 11px; font-weight: 600; letter-spacing: 6px; color: var(--gold-400); text-transform: uppercase; text-align: center; }
-    .hd-title { font-family: var(--font-d); font-weight: 800; letter-spacing: 3px; font-size: clamp(26px, 5.5vw, 44px); color: var(--white); text-transform: uppercase; line-height: 1.05; text-align: center; text-shadow: 0 2px 30px rgba(255,255,255,.07); }
-    .hd-sub { font-size: 13px; font-weight: 300; color: var(--navy-200); letter-spacing: .5px; text-align: center; }
-    .divider { width: 100%; display: flex; align-items: center; gap: 14px; }
-    .div-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(201,145,58,.4) 40%, rgba(201,145,58,.4) 60%, transparent); }
-    .div-gem { width: 7px; height: 7px; background: var(--gold-400); transform: rotate(45deg); flex-shrink: 0; }
-    .div-text { font-family: var(--font-d); font-size: 9px; font-weight: 700; letter-spacing: 4px; color: var(--gold-400); text-transform: uppercase; white-space: nowrap; }
-    .main-card { width: 100%; background: rgba(255,255,255,.97); border-radius: var(--r-xl); overflow: hidden; box-shadow: var(--sh-xl), 0 0 0 1px rgba(255,255,255,.06); animation: fromBottom .7s .13s var(--ease) both; }
-    .card-bar { height: 4px; background: linear-gradient(90deg, var(--navy-900) 0%, var(--navy-700) 18%, var(--gold-500) 42%, var(--gold-300) 50%, var(--gold-500) 58%, var(--navy-700) 82%, var(--navy-900) 100%); }
-    .card-stripe { background: linear-gradient(135deg, var(--navy-900) 0%, var(--navy-800) 100%); padding: 17px 40px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,.04); }
-    .stripe-label { font-family: var(--font-d); font-size: 11px; font-weight: 700; letter-spacing: 4px; color: var(--gold-300); text-transform: uppercase; }
-    .stripe-ref { font-family: var(--font-d); font-size: 10px; font-weight: 600; letter-spacing: 3px; color: var(--navy-400); text-transform: uppercase; }
+    .emblem-core {
+      width: 74px; height: 74px; border-radius: 50%; position: relative; z-index: 2;
+      background: linear-gradient(145deg, var(--navy-800), var(--navy-900) 60%, #050e22);
+      border: 2.5px solid rgba(58, 201, 137, 0.65);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow:
+        0 0 0 2px rgba(8, 249, 133, 0.1),
+        0 8px 32px rgba(4,13,30,.7),
+        inset 0 1px 0 rgba(7, 237, 157, 0.07);
+    }
+    .emblem-letters {
+      font-family: var(--font-d); font-weight: 800; font-size: 26px;
+      letter-spacing: 2px; color: var(--gold-300);
+      text-shadow: 0 0 24px rgba(240,192,96,.35);
+      line-height: 1;
+    }
+    .hd-eyebrow {
+      font-family: var(--font-d); font-size: 11px; font-weight: 600;
+      letter-spacing: 6px; color: var(--gold-400); text-transform: uppercase;
+      text-align: center;
+    }
+    .hd-title {
+      font-family: var(--font-d); font-weight: 800; letter-spacing: 3px;
+      font-size: clamp(26px, 5.5vw, 44px);
+      color: var(--white); text-transform: uppercase; line-height: 1.05;
+      text-align: center; text-shadow: 0 2px 30px rgba(255,255,255,.07);
+    }
+    .hd-sub {
+      font-size: 13px; font-weight: 300; color: var(--navy-200);
+      letter-spacing: .5px; text-align: center;
+    }
+    .divider {
+      width: 100%; display: flex; align-items: center; gap: 14px;
+    }
+    .div-line {
+      flex: 1; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(201,145,58,.4) 40%, rgba(201,145,58,.4) 60%, transparent);
+    }
+    .div-gem {
+      width: 7px; height: 7px; background: var(--gold-400);
+      transform: rotate(45deg); flex-shrink: 0;
+    }
+    .div-text {
+      font-family: var(--font-d); font-size: 9px; font-weight: 700;
+      letter-spacing: 4px; color: var(--gold-400); text-transform: uppercase; white-space: nowrap;
+    }
+    /* ── MAIN CARD ───────────────────────────────────── */
+    .main-card {
+      width: 100%; background: rgba(255,255,255,.97); border-radius: var(--r-xl); overflow: hidden;
+      box-shadow: var(--sh-xl), 0 0 0 1px rgba(255,255,255,.06);
+      animation: fromBottom .7s .13s var(--ease) both;
+    }
+    .card-bar {
+      height: 4px;
+      background: linear-gradient(90deg,
+        var(--navy-900) 0%,
+        var(--navy-700) 18%,
+        var(--gold-500) 42%,
+        var(--gold-300) 50%,
+        var(--gold-500) 58%,
+        var(--navy-700) 82%,
+        var(--navy-900) 100%
+      );
+    }
+    .card-stripe {
+      background: linear-gradient(135deg, var(--navy-900) 0%, var(--navy-800) 100%);
+      padding: 17px 40px;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid rgba(255,255,255,.04);
+    }
+    .stripe-label {
+      font-family: var(--font-d); font-size: 11px; font-weight: 700;
+      letter-spacing: 4px; color: var(--gold-300); text-transform: uppercase;
+    }
+    .stripe-ref {
+      font-family: var(--font-d); font-size: 10px; font-weight: 600;
+      letter-spacing: 3px; color: var(--navy-400); text-transform: uppercase;
+    }
     .card-body { padding: 42px 40px 50px; background: var(--white); }
-    .alert { display: none; align-items: flex-start; gap: 12px; padding: 13px 18px; border-radius: var(--r-md); margin-bottom: 22px; font-size: 13px; font-weight: 500; animation: fadeIn .3s var(--ease) both; }
+
+    /* ── LOADING STATE ───────────────────────────────── */
+    .loading-state {
+      display: none;
+      flex-direction: column; align-items: center; justify-content: center;
+      gap: 18px; padding: 48px 20px; text-align: center;
+    }
+    .loading-state.show { display: flex; }
+    .load-spinner-wrap {
+      position: relative; width: 60px; height: 60px;
+    }
+    .load-ring {
+      position: absolute; inset: 0; border-radius: 50%;
+      border: 3px solid transparent;
+      border-top-color: var(--navy-700);
+      animation: spin .8s linear infinite;
+    }
+    .load-ring-2 {
+      position: absolute; inset: 8px; border-radius: 50%;
+      border: 2px solid transparent;
+      border-top-color: var(--gold-400);
+      animation: spin .5s linear infinite reverse;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .load-title {
+      font-family: var(--font-d); font-size: 14px; font-weight: 700;
+      letter-spacing: 3px; color: var(--navy-800); text-transform: uppercase;
+    }
+    .load-sub {
+      font-size: 12px; color: var(--gray-400); letter-spacing: .3px;
+    }
+    .load-staff-chip {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--navy-50); border: 1px solid var(--navy-100);
+      border-radius: var(--r-sm); padding: 5px 14px;
+    }
+    .lsc-lbl { font-family: var(--font-d); font-size: 9px; font-weight: 700; letter-spacing: 3px; color: var(--navy-400); text-transform: uppercase; }
+    .lsc-val { font-family: var(--font-d); font-size: 14px; font-weight: 800; letter-spacing: 2px; color: var(--navy-800); }
+
+    /* ── ALERT BOX ───────────────────────────────────── */
+    .alert {
+      display: none; align-items: flex-start; gap: 12px;
+      padding: 13px 18px; border-radius: var(--r-md); margin-bottom: 22px;
+      font-size: 13px; font-weight: 500;
+      animation: fadeIn .3s var(--ease) both;
+    }
     .alert.show { display: flex; }
-    .alert.warn { background: var(--amber-100); border: 1.5px solid rgba(217,119,6,.3); color: #92400e; }
+    .alert.warn {
+      background: var(--amber-100);
+      border: 1.5px solid rgba(217,119,6,.3);
+      color: #92400e;
+    }
     .alert-ico { flex-shrink: 0; margin-top: 1px; }
+
+    /* ── FALLBACK SEARCH FORM ────────────────────────── */
+    /* Shown only when no ?staff= param is in the URL */
+    .fallback-block {
+      display: none;
+    }
+    .fallback-block.show {
+      display: block;
+      animation: fromBottom .4s var(--ease) both;
+    }
+    .fallback-notice {
+      background: linear-gradient(135deg, #f0f8ff 0%, #e8f4fd 100%);
+      border: 1.5px solid rgba(16,52,112,.18);
+      border-radius: var(--r-md);
+      padding: 16px 20px;
+      margin-bottom: 28px;
+      display: flex; gap: 14px; align-items: flex-start;
+    }
+    .fn-icon {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--navy-900);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .fn-title {
+      font-family: var(--font-d); font-size: 11px; font-weight: 700;
+      letter-spacing: 3px; color: var(--navy-900); text-transform: uppercase; margin-bottom: 5px;
+    }
+    .fn-text {
+      font-size: 12px; color: var(--gray-500); line-height: 1.7;
+    }
+    .fn-text code {
+      background: var(--gray-100); padding: 1px 6px; border-radius: 3px;
+      font-size: 11px; color: var(--navy-800); font-family: monospace;
+    }
+    .search-block { display: flex; flex-direction: column; gap: 10px; margin-bottom: 32px; }
+    .search-meta  { display: flex; align-items: center; gap: 8px; }
+    .meta-tag {
+      font-family: var(--font-d); font-size: 9px; font-weight: 700;
+      letter-spacing: 3px; color: var(--white); background: var(--navy-900);
+      padding: 3px 9px; border-radius: 3px; text-transform: uppercase;
+    }
+    .meta-desc { font-size: 12px; font-weight: 500; color: var(--gray-400); letter-spacing: .4px; }
+    .search-row   { display: flex; gap: 12px; align-items: stretch; }
+    .inp-wrap { flex: 1; position: relative; }
+    .inp-icon {
+      position: absolute; left: 0; top: 0; bottom: 0; width: 52px;
+      display: flex; align-items: center; justify-content: center;
+      border-right: 1.5px solid var(--gray-200); pointer-events: none;
+      transition: border-color .2s;
+    }
+    .inp-icon svg { color: var(--gray-300); transition: color .2s; }
+    .inp-wrap:focus-within .inp-icon            { border-color: var(--navy-200); }
+    .inp-wrap:focus-within .inp-icon svg        { color: var(--navy-700); }
+    .staff-inp {
+      width: 100%; height: 56px; padding: 0 18px 0 62px;
+      font-family: var(--font-d); font-size: 17px; font-weight: 600;
+      letter-spacing: 2px; text-transform: uppercase;
+      color: var(--navy-900); background: var(--gray-50);
+      border: 2px solid var(--gray-200); border-radius: var(--r-md);
+      outline: none;
+      transition: border-color .25s, box-shadow .25s, background .25s;
+    }
+    .staff-inp::placeholder { color: var(--gray-300); font-weight: 400; letter-spacing: 1px; text-transform: none; }
+    .staff-inp:focus { border-color: var(--navy-700); background: var(--white); box-shadow: 0 0 0 4px rgba(16,52,112,.09); }
+    .v-btn {
+      position: relative; height: 56px; padding: 0 30px;
+      background: var(--navy-900); color: var(--white);
+      font-family: var(--font-d); font-size: 14px; font-weight: 700;
+      letter-spacing: 2.5px; text-transform: uppercase;
+      border: none; border-radius: var(--r-md); cursor: pointer;
+      white-space: nowrap; overflow: hidden;
+      transition: transform .2s var(--ease), box-shadow .2s, background .2s;
+      box-shadow: 0 4px 20px rgba(10,31,68,.4);
+    }
+    .v-btn::before {
+      content: ''; position: absolute; top: 0; left: -100%; width: 60%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.13), transparent);
+      transform: skewX(-20deg); transition: left .5s var(--ease);
+    }
+    .v-btn::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2.5px;
+      background: linear-gradient(90deg, var(--gold-500), var(--gold-300), var(--gold-500));
+      opacity: 0; transition: opacity .2s;
+    }
+    .v-btn:hover                  { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(10,31,68,.5); background: var(--navy-800); }
+    .v-btn:hover::before          { left: 140%; }
+    .v-btn:hover::after           { opacity: 1; }
+    .v-btn:active                 { transform: translateY(0); }
+    .v-btn:disabled               { cursor: not-allowed; opacity: .75; transform: none; }
+    .v-btn-inner                  { position: relative; z-index: 1; display: flex; align-items: center; gap: 10px; }
+    .v-spinner                    { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,.25); border-top-color: var(--white); border-radius: 50%; animation: spin .7s linear infinite; display: none; }
+    .v-btn.loading .v-spinner     { display: block; }
+    .v-btn.loading .v-lbl         { display: none; }
+    .v-btn.loading .v-ico         { display: none; }
+
+    /* ── RESULT AREA ─────────────────────────────────── */
     .result-area { display: none; }
     .result-area.show { display: block; animation: fromBottom .5s var(--ease) both; }
-    .nf-box { background: var(--red-50); border: 2px solid rgba(196,30,53,.18); border-radius: var(--r-lg); padding: 32px; display: flex; align-items: center; gap: 22px; }
-    .nf-icon-wrap { width: 62px; height: 62px; border-radius: 50%; background: rgba(196,30,53,.1); border: 1.5px solid rgba(196,30,53,.2); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    /* ── NOT FOUND ───────────────────────────────────── */
+    .nf-box {
+      background: var(--red-50); border: 2px solid rgba(196,30,53,.18);
+      border-radius: var(--r-lg); padding: 32px;
+      display: flex; align-items: center; gap: 22px;
+    }
+    .nf-icon-wrap {
+      width: 62px; height: 62px; border-radius: 50%;
+      background: rgba(196,30,53,.1); border: 1.5px solid rgba(196,30,53,.2);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
     .nf-icon-wrap svg { color: var(--red-500); }
-    .nf-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--red-500); color: var(--white); font-family: var(--font-d); font-size: 12px; font-weight: 700; letter-spacing: 2px; padding: 5px 14px; border-radius: 100px; text-transform: uppercase; margin-bottom: 8px; }
+    .nf-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--red-500); color: var(--white);
+      font-family: var(--font-d); font-size: 12px; font-weight: 700;
+      letter-spacing: 2px; padding: 5px 14px; border-radius: 100px;
+      text-transform: uppercase; margin-bottom: 8px;
+    }
     .nf-title { font-family: var(--font-d); font-size: 21px; font-weight: 800; color: var(--red-700); letter-spacing: 1px; margin-bottom: 5px; }
-    .nf-body { font-size: 13px; color: var(--red-700); opacity: .75; line-height: 1.65; }
-    .staff-card { background: var(--white); border: 2px solid var(--gray-200); border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--sh-md); }
-    .sc-head { background: linear-gradient(135deg, var(--navy-900), var(--navy-800) 55%, var(--navy-700)); padding: 18px 28px; display: flex; align-items: center; justify-content: space-between; gap: 14px; }
-    .sc-head-l { display: flex; flex-direction: column; gap: 3px; }
-    .sc-eye { font-family: var(--font-d); font-size: 9px; font-weight: 600; letter-spacing: 4px; color: var(--navy-200); text-transform: uppercase; }
-    .sc-htitle { font-family: var(--font-d); font-size: 16px; font-weight: 700; letter-spacing: 2px; color: var(--white); }
-    .v-badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 18px; border-radius: 100px; background: var(--green-500); color: var(--white); font-family: var(--font-d); font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; white-space: nowrap; box-shadow: 0 4px 20px rgba(14,148,85,.45), 0 0 0 3px rgba(14,148,85,.15); animation: badgePop .5s .2s var(--spring) both; }
-    .v-badge-ico { width: 18px; height: 18px; background: rgba(255,255,255,.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .nf-body  { font-size: 13px; color: var(--red-700); opacity: .75; line-height: 1.65; }
+    /* ═══════════════════════════════════════════════════
+       STAFF RESULT CARD
+    ═══════════════════════════════════════════════════ */
+    .staff-card {
+      background: var(--white); border: 2px solid var(--gray-200);
+      border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--sh-md);
+    }
+    .sc-head {
+      background: linear-gradient(135deg, var(--navy-900), var(--navy-800) 55%, var(--navy-700));
+      padding: 18px 28px;
+      display: flex; align-items: center; justify-content: space-between; gap: 14px;
+    }
+    .sc-head-l     { display: flex; flex-direction: column; gap: 3px; }
+    .sc-eye        { font-family: var(--font-d); font-size: 9px; font-weight: 600; letter-spacing: 4px; color: var(--navy-200); text-transform: uppercase; }
+    .sc-htitle     { font-family: var(--font-d); font-size: 16px; font-weight: 700; letter-spacing: 2px; color: var(--white); }
+    .v-badge {
+      display: inline-flex; align-items: center; gap: 8px; padding: 8px 18px;
+      border-radius: 100px; background: var(--green-500); color: var(--white);
+      font-family: var(--font-d); font-size: 12px; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase; white-space: nowrap;
+      box-shadow: 0 4px 20px rgba(14,148,85,.45), 0 0 0 3px rgba(14,148,85,.15);
+      animation: badgePop .5s .2s var(--spring) both;
+    }
+    .v-badge-ico {
+      width: 18px; height: 18px; background: rgba(255,255,255,.2); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
     @keyframes badgePop { from{opacity:0;transform:scale(.5) translateY(6px)} to{opacity:1;transform:scale(1) translateY(0)} }
-    .sc-body { padding: 30px 28px; display: grid; grid-template-columns: 162px 1fr; gap: 28px; align-items: start; }
+    .sc-body {
+      padding: 30px 28px;
+      display: grid; grid-template-columns: 162px 1fr; gap: 28px; align-items: start;
+    }
     .pp-col { display: flex; flex-direction: column; align-items: center; gap: 10px; }
-    .pp-frame { width: 142px; height: 172px; border-radius: var(--r-md); border: 3px solid var(--navy-900); box-shadow: 0 0 0 4px rgba(10,31,68,.08), var(--sh-md); overflow: hidden; position: relative; background: var(--gray-100); display: flex; align-items: center; justify-content: center; }
-    .pp-frame::before, .pp-frame::after { content: ''; position: absolute; width: 15px; height: 15px; border-color: var(--gold-400); border-style: solid; z-index: 10; pointer-events: none; }
+    .pp-frame {
+      width: 142px; height: 172px;
+      border-radius: var(--r-md);
+      border: 3px solid var(--navy-900);
+      box-shadow: 0 0 0 4px rgba(10,31,68,.08), var(--sh-md);
+      overflow: hidden; position: relative;
+      background: var(--gray-100);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .pp-frame::before, .pp-frame::after {
+      content: ''; position: absolute;
+      width: 15px; height: 15px;
+      border-color: var(--gold-400); border-style: solid;
+      z-index: 10; pointer-events: none;
+    }
     .pp-frame::before { top: 5px; left: 5px; border-width: 2.5px 0 0 2.5px; }
-    .pp-frame::after { bottom: 5px; right: 5px; border-width: 0 2.5px 2.5px 0; }
-    .pp-skel { position: absolute; inset: 0; z-index: 2; background: linear-gradient(90deg, #f0f3f9 25%, #dde3f0 50%, #f0f3f9 75%); background-size: 200% 100%; animation: shimmer 1.4s ease-in-out infinite; transition: opacity .4s; }
+    .pp-frame::after  { bottom: 5px; right: 5px; border-width: 0 2.5px 2.5px 0; }
+    .pp-skel {
+      position: absolute; inset: 0; z-index: 2;
+      background: linear-gradient(90deg, #f0f3f9 25%, #dde3f0 50%, #f0f3f9 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s ease-in-out infinite;
+      transition: opacity .4s;
+    }
     .pp-skel.gone { opacity: 0; pointer-events: none; }
     @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
-    .pp-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; z-index: 3; opacity: 0; transition: opacity .5s ease; }
+    .pp-img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+      z-index: 3; opacity: 0;
+      transition: opacity .5s ease;
+    }
     .pp-img.loaded { opacity: 1; }
-    .pp-fallback { position: absolute; inset: 0; z-index: 4; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 12px; text-align: center; background: var(--gray-100); }
-    .pp-fallback svg { color: var(--gray-300); }
+    .pp-fallback {
+      position: absolute; inset: 0; z-index: 4;
+      display: none;
+      flex-direction: column; align-items: center; justify-content: center;
+      gap: 8px; padding: 12px; text-align: center;
+      background: var(--gray-100);
+    }
+    .pp-fallback svg  { color: var(--gray-300); }
     .pp-fb-lbl { font-family: var(--font-d); font-size: 10px; font-weight: 700; letter-spacing: 1px; color: var(--gray-400); text-transform: uppercase; }
     .pp-fb-sub { font-size: 9px; color: var(--gray-300); line-height: 1.5; margin-top: 2px; }
-    .pp-err-hint { display: none; width: 100%; max-width: 180px; background: #fff8e1; border: 1px solid #f9a825; border-radius: var(--r-sm); padding: 10px 12px; }
+    .pp-err-hint {
+      display: none;
+      width: 100%; max-width: 180px;
+      background: #fff8e1; border: 1px solid #f9a825;
+      border-radius: var(--r-sm); padding: 10px 12px;
+    }
     .pp-err-hint.show { display: block; }
     .pp-err-hint-title { font-family: var(--font-d); font-size: 9px; font-weight: 700; letter-spacing: 2px; color: #7a5c00; text-transform: uppercase; margin-bottom: 5px; }
-    .pp-err-hint-text { font-size: 9.5px; color: #7a5c00; line-height: 1.65; }
+    .pp-err-hint-text  { font-size: 9.5px; color: #7a5c00; line-height: 1.65; }
     .pp-err-hint-text code { background: rgba(0,0,0,.06); padding: 1px 4px; border-radius: 3px; font-size: 9px; }
-    .pp-label { font-family: var(--font-d); font-size: 9px; font-weight: 700; letter-spacing: 3px; color: var(--gray-400); text-transform: uppercase; text-align: center; }
-    .active-pill { display: inline-flex; align-items: center; gap: 5px; padding: 4px 13px; border-radius: 100px; background: var(--green-50); border: 1px solid rgba(14,148,85,.3); }
+    .pp-label {
+      font-family: var(--font-d); font-size: 9px; font-weight: 700;
+      letter-spacing: 3px; color: var(--gray-400); text-transform: uppercase; text-align: center;
+    }
+    .active-pill {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 4px 13px; border-radius: 100px;
+      background: var(--green-50); border: 1px solid rgba(14,148,85,.3);
+    }
     .ap-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green-500); animation: dotBlink 2s ease-in-out infinite; }
     .ap-txt { font-family: var(--font-d); font-size: 10px; font-weight: 700; letter-spacing: 2px; color: var(--green-700); text-transform: uppercase; }
     .det-col { display: flex; flex-direction: column; }
-    .det-name { font-family: var(--font-d); font-weight: 800; text-transform: uppercase; font-size: clamp(20px, 3.8vw, 29px); letter-spacing: 1px; color: var(--navy-900); line-height: 1.1; margin-bottom: 6px; }
-    .det-id-chip { display: inline-flex; align-items: center; gap: 7px; background: var(--navy-50); border: 1px solid var(--navy-100); border-radius: var(--r-sm); padding: 4px 11px; margin-bottom: 22px; width: fit-content; }
+    .det-name {
+      font-family: var(--font-d); font-weight: 800; text-transform: uppercase;
+      font-size: clamp(20px, 3.8vw, 29px); letter-spacing: 1px;
+      color: var(--navy-900); line-height: 1.1; margin-bottom: 6px;
+    }
+    .det-id-chip {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: var(--navy-50); border: 1px solid var(--navy-100);
+      border-radius: var(--r-sm); padding: 4px 11px; margin-bottom: 22px; width: fit-content;
+    }
     .dic-lbl { font-family: var(--font-d); font-size: 9px; font-weight: 700; letter-spacing: 3px; color: var(--navy-400); text-transform: uppercase; }
     .dic-val { font-family: var(--font-d); font-size: 13px; font-weight: 800; letter-spacing: 2px; color: var(--navy-800); }
     .det-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 17px 26px; }
-    .df-lbl { font-family: var(--font-d); font-size: 9px; font-weight: 700; letter-spacing: 3px; color: var(--gray-300); text-transform: uppercase; margin-bottom: 4px; display: flex; align-items: center; gap: 5px; }
+    .df-lbl {
+      font-family: var(--font-d); font-size: 9px; font-weight: 700;
+      letter-spacing: 3px; color: var(--gray-300); text-transform: uppercase;
+      margin-bottom: 4px; display: flex; align-items: center; gap: 5px;
+    }
     .df-lbl::after { content: ''; flex: 1; height: 1px; background: var(--gray-200); }
     .df-val { font-size: 14px; font-weight: 600; color: var(--navy-900); line-height: 1.3; }
-    .sc-foot { background: var(--gray-50); border-top: 1px solid var(--gray-200); padding: 13px 28px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
-    .sc-foot-l { display: flex; align-items: center; gap: 8px; }
-    .sc-seal { width: 20px; height: 20px; background: var(--navy-900); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .sc-foot {
+      background: var(--gray-50); border-top: 1px solid var(--gray-200);
+      padding: 13px 28px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+    }
+    .sc-foot-l   { display: flex; align-items: center; gap: 8px; }
+    .sc-seal     { width: 20px; height: 20px; background: var(--navy-900); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
     .sc-seal-txt { font-family: var(--font-d); font-size: 7px; font-weight: 800; color: var(--gold-300); }
-    .sc-ft-lbl { font-family: var(--font-d); font-size: 10px; font-weight: 600; letter-spacing: 2px; color: var(--gray-400); text-transform: uppercase; }
-    .sc-ft-ts { font-family: var(--font-d); font-size: 10px; letter-spacing: 1px; color: var(--gray-300); }
-    .page-footer { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 6px; animation: fromBottom .7s .26s var(--ease) both; }
+    .sc-ft-lbl   { font-family: var(--font-d); font-size: 10px; font-weight: 600; letter-spacing: 2px; color: var(--gray-400); text-transform: uppercase; }
+    .sc-ft-ts    { font-family: var(--font-d); font-size: 10px; letter-spacing: 1px; color: var(--gray-300); }
+    /* ── PAGE FOOTER ─────────────────────────────────── */
+    .page-footer {
+      width: 100%; display: flex; flex-direction: column; align-items: center; gap: 6px;
+      animation: fromBottom .7s .26s var(--ease) both;
+    }
     .foot-rule { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, rgba(58,106,191,.3), rgba(201,145,58,.3), rgba(58,106,191,.3), transparent); margin-bottom: 4px; }
     .foot-main { font-family: var(--font-d); font-size: 10px; font-weight: 500; letter-spacing: 3px; color: var(--navy-400); text-transform: uppercase; text-align: center; }
-    .foot-sub { font-size: 11px; font-weight: 300; color: var(--navy-400); opacity: .65; text-align: center; }
-    @keyframes fromTop { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)} }
-    @keyframes fromBottom { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
-    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+    .foot-sub  { font-size: 11px; font-weight: 300; color: var(--navy-400); opacity: .65; text-align: center; }
+    /* ── ANIMATIONS ──────────────────────────────────── */
+    @keyframes fromTop    { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes fromBottom { from{opacity:0;transform:translateY(24px)}  to{opacity:1;transform:translateY(0)} }
+    @keyframes fadeIn     { from{opacity:0}                             to{opacity:1} }
+    /* ── RESPONSIVE ──────────────────────────────────── */
     @media (max-width: 620px) {
-      .page { padding: 28px 16px 54px; gap: 22px; }
-      .card-body { padding: 26px 20px 34px; }
-      .card-stripe { padding: 14px 20px; }
-      .stripe-ref { display: none; }
-      .sc-body { grid-template-columns: 1fr; }
-      .pp-col { flex-direction: row; align-items: flex-start; flex-wrap: wrap; gap: 14px; }
-      .det-grid { grid-template-columns: 1fr; gap: 14px; }
-      .nf-box { flex-direction: column; text-align: center; align-items: center; }
-      .sc-head { flex-direction: column; align-items: flex-start; gap: 12px; }
-      .emblem-wrap { width: 82px; height: 82px; }
-      .emblem-core { width: 62px; height: 62px; }
+      .page         { padding: 28px 16px 54px; gap: 22px; }
+      .card-body    { padding: 26px 20px 34px; }
+      .card-stripe  { padding: 14px 20px; }
+      .stripe-ref   { display: none; }
+      .search-row   { flex-direction: column; }
+      .v-btn        { width: 100%; justify-content: center; }
+      .sc-body      { grid-template-columns: 1fr; }
+      .pp-col       { flex-direction: row; align-items: flex-start; flex-wrap: wrap; gap: 14px; }
+      .det-grid     { grid-template-columns: 1fr; gap: 14px; }
+      .nf-box       { flex-direction: column; text-align: center; align-items: center; }
+      .sc-head      { flex-direction: column; align-items: flex-start; gap: 12px; }
+      .emblem-wrap  { width: 82px; height: 82px; }
+      .emblem-core  { width: 62px; height: 62px; }
       .emblem-letters { font-size: 21px; }
+      .fallback-notice { flex-direction: column; }
     }
   </style>
 </head>
 <body>
-
+<!-- Background layers -->
 <div class="bg-base"></div>
 <div class="bg-grid"></div>
 <div class="bg-diag"></div>
 <div class="bg-diag2"></div>
 <div class="bg-glow"></div>
-
 <div class="page">
+  <!-- ══ SYSTEM BAR ══ -->
   <div class="sys-bar">
     <div class="sys-left">
       <div class="dot-live"></div>
@@ -164,7 +569,7 @@
     </div>
     <div class="sys-right">SESSION — <span id="sessId"></span></div>
   </div>
-
+  <!-- ══ HEADER ══ -->
   <header class="header">
     <div class="emblem-wrap">
       <div class="emblem-core">
@@ -184,7 +589,7 @@
       <div class="div-line"></div>
     </div>
   </header>
-
+  <!-- ══ MAIN CARD ══ -->
   <main class="main-card">
     <div class="card-bar"></div>
     <div class="card-stripe">
@@ -192,6 +597,8 @@
       <span class="stripe-ref" id="qRef">REF: AWAITING QUERY</span>
     </div>
     <div class="card-body">
+
+      <!-- Alert box (shared by both modes) -->
       <div class="alert warn" id="alertBox" role="alert">
         <span class="alert-ico">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -201,165 +608,251 @@
         </span>
         <span id="alertMsg"></span>
       </div>
-      <div class="result-area" id="resultBox" aria-live="polite"></div>
-    </div>
-  </main>
 
+      <!-- ══════════════════════════════════════════════════════
+           LOADING STATE
+           Shown while auto-lookup (URL param mode) is running
+      ══════════════════════════════════════════════════════ -->
+      <div class="loading-state" id="loadingState">
+        <div class="load-spinner-wrap">
+          <div class="load-ring"></div>
+          <div class="load-ring-2"></div>
+        </div>
+        <div class="load-staff-chip">
+          <span class="lsc-lbl">Verifying</span>
+          <span class="lsc-val" id="loadingStaffNo">—</span>
+        </div>
+        <div class="load-title">Looking Up Record</div>
+        <div class="load-sub">Querying NISO personnel database…</div>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════
+           FALLBACK SEARCH FORM
+           Only shown when NO ?staff= parameter is in the URL.
+           Visitors with a proper link will never see this.
+      ══════════════════════════════════════════════════════ -->
+      <div class="fallback-block" id="fallbackBlock">
+        <div class="fallback-notice">
+          <div class="fn-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="12"/>
+              <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+          </div>
+          <div>
+            <div class="fn-title">📌 No Staff ID in URL</div>
+            <div class="fn-text">
+              This portal is designed to be accessed via a direct link in the format:<br>
+              <code>https://niso.github.io/id/?staff=NISO001</code><br><br>
+              If you have a staff number, you may enter it manually below.
+            </div>
+          </div>
+        </div>
+
+        <!-- Manual search form (fallback only) -->
+        <div class="search-block">
+          <div class="search-meta">
+            <span class="meta-tag">Required</span>
+            <span class="meta-desc">Enter Staff Identification Number to begin verification</span>
+          </div>
+          <div class="search-row">
+            <div class="inp-wrap">
+              <div class="inp-icon">
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="1.8"
+                     stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="5" width="20" height="14" rx="2"/>
+                  <circle cx="8.5" cy="12" r="2"/>
+                  <path d="M14 9h4M14 12h4M14 15h2"/>
+                </svg>
+              </div>
+              <input
+                type="text"
+                id="staffInp"
+                class="staff-inp"
+                placeholder="Enter Staff Number…"
+                autocomplete="off"
+                spellcheck="false"
+                aria-label="Staff identification number"
+              />
+            </div>
+            <button class="v-btn" id="vBtn" onclick="doVerify()">
+              <span class="v-btn-inner">
+                <svg class="v-ico" width="15" height="15" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="11" cy="11" r="8"/>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                </svg>
+                <span class="v-lbl">Check Staff Validity</span>
+                <span class="v-spinner"></span>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div><!-- /fallback-block -->
+
+      <!-- Result area (used by both URL-param mode and manual fallback) -->
+      <div class="result-area" id="resultBox" aria-live="polite"></div>
+
+    </div><!-- /card-body -->
+  </main>
+  <!-- ══ PAGE FOOTER ══ -->
   <footer class="page-footer">
     <div class="foot-rule"></div>
     <p class="foot-main">&copy; <span id="yr"></span> &nbsp;NISO &nbsp;·&nbsp; All Rights Reserved</p>
     <p class="foot-sub">All verification queries are logged and monitored. Unauthorized use is a criminal offence.</p>
   </footer>
-</div>
-
+</div><!-- /page -->
 <script>
-/* ════════════════════════════════════════════════════════════════
-   API CONFIGURATION (REPLACE WITH YOUR OWN DETAILS)
-═════════════════════════════════════════════════════════════════ */
+/* ╔════════════════════════════════════════════════════════════╗
+   ║           A P I   C O N F I G U R A T I O N              ║
+   ╚════════════════════════════════════════════════════════════╝ */
 const CFG = {
-  APP_ID  : 'f97fe13d-fc7c-4546-ad97-9f6ec4cbfb76',   // Your AppSheet Application ID
-  API_KEY : 'V2-Z5Y7J-grebE-2P0Kw-u3WAG-FMRQE-CPCJF-FrtHT-svL6u',  // Your AppSheet API Access Key
-  TABLE   : 'NISO Staff',              // Exact table name (case-sensitive)
+  APP_ID  : 'f97fe13d-fc7c-4546-ad97-9f6ec4cbfb76',
+  API_KEY : 'V2-Z5Y7J-grebE-2P0Kw-u3WAG-FMRQE-CPCJF-FrtHT-svL6u',
+  TABLE   : 'NISO Staff',
 };
+const ENDPOINT =
+  `https://api.appsheet.com/api/v2/apps/${CFG.APP_ID}` +
+  `/tables/${encodeURIComponent(CFG.TABLE)}/Action`;
 
-const ENDPOINT = `https://api.appsheet.com/api/v2/apps/${CFG.APP_ID}/tables/${encodeURIComponent(CFG.TABLE)}/Action`;
+/* ── STATE ── */
 const S = { cache: null, busy: false };
 
-/* ════════════════════════════════════════════════════════════════
-   ENHANCED URL EXTRACTION - Supports multiple formats:
-   
-   1. Query parameter:    ?staff=STAFF123
-   2. Path parameter:     /STAFF123
-   3. Path with /id/:     /id/STAFF123
-   4. Hash parameter:     #STAFF123
-═════════════════════════════════════════════════════════════════ */
-function getStaffIdFromUrl() {
-  // Method 1: Check URL query parameters (?staff=XXX or ?id=XXX)
-  const urlParams = new URLSearchParams(window.location.search);
-  let staffId = urlParams.get('staff') || urlParams.get('id') || urlParams.get('staffno');
-  
-  if (staffId) {
-    console.log('[NISO] ✅ Found staff ID in query param:', staffId);
-    return staffId.trim().toUpperCase();
-  }
-  
-  // Method 2: Check URL hash (#STAFF123)
-  if (window.location.hash && window.location.hash.length > 1) {
-    staffId = window.location.hash.substring(1); // Remove the #
-    console.log('[NISO] ✅ Found staff ID in hash:', staffId);
-    return staffId.trim().toUpperCase();
-  }
-  
-  // Method 3: Extract from pathname
-  const pathname = window.location.pathname;
-  const segments = pathname.split('/').filter(seg => seg.length > 0 && seg !== 'id');
-  
-  if (segments.length > 0) {
-    // Get the last segment of the path
-    let lastSegment = segments[segments.length - 1];
-    // Decode URL encoding (e.g., %20 becomes space)
-    lastSegment = decodeURIComponent(lastSegment);
-    
-    // Validate it's not an HTML file or reserved word
-    const reserved = ['index.html', 'id', 'staff', 'verify'];
-    if (!reserved.includes(lastSegment.toLowerCase()) && !lastSegment.includes('.')) {
-      console.log('[NISO] ✅ Found staff ID in path:', lastSegment);
-      return lastSegment.trim().toUpperCase();
-    }
-  }
-  
-  console.log('[NISO] ⚠ No staff ID found in URL');
-  return null;
-}
-
-/* ════════════════════════════════════════════════════════════════
-   INITIALIZATION
-═════════════════════════════════════════════════════════════════ */
+/* ══════════════════════════════════════════════════════════════
+   INIT
+   ─────────────────────────────────────────────────────────────
+   1. Read ?staff= from the URL.
+   2. If present  → auto-lookup, show loading spinner, hide form.
+   3. If absent   → show fallback manual search form.
+══════════════════════════════════════════════════════════════ */
 (function init() {
-  document.getElementById('yr').textContent = new Date().getFullYear();
+  document.getElementById('yr').textContent     = new Date().getFullYear();
   document.getElementById('sessId').textContent = rnd6();
-  
-  const staffId = getStaffIdFromUrl();
-  
-  if (staffId) {
-    // Show loading indicator in result area
-    document.getElementById('resultBox').innerHTML = `
-      <div style="text-align: center; padding: 40px; color: var(--navy-900);">
-        <div style="display: inline-block; width: 40px; height: 40px; border: 3px solid var(--gray-200); border-top-color: var(--navy-700); border-radius: 50%; animation: spin .7s linear infinite; margin-bottom: 16px;"></div>
-        <p style="font-family: var(--font-d); font-size: 14px; letter-spacing: 2px;">Verifying Staff ID: ${staffId}</p>
-      </div>
-    `;
-    showResult();
-    
-    // Auto-verify
-    doAutoVerify(staffId);
-    
-    // Update reference label
-    document.getElementById('qRef').textContent = `REF: ${staffId}`;
+
+  /* Wire up manual fallback form */
+  const inp = document.getElementById('staffInp');
+  if (inp) {
+    inp.addEventListener('keydown', e => { if (e.key === 'Enter') doVerify(); });
+    inp.addEventListener('input',   ()  => { clearResult(); clearAlert(); });
+  }
+
+  /* ── Read URL parameter ── */
+  const params   = new URLSearchParams(window.location.search);
+  const staffParam = (params.get('staff') || '').trim();
+
+  if (staffParam) {
+    /* URL-param mode: show loading spinner, auto-lookup */
+    showLoading(staffParam);
+    autoLookup(staffParam);
   } else {
-    showAlert('No staff identification number provided. Please use a valid verification link format: ?staff=ID or /ID or #ID');
-    document.getElementById('qRef').textContent = 'REF: MISSING IDENTIFIER';
+    /* No param: show fallback search form */
+    document.getElementById('fallbackBlock').classList.add('show');
   }
 })();
 
-async function doAutoVerify(staffNumber) {
-  if (S.busy) return;
-  clearAlert();
-  
-  S.busy = true;
+/* ══════════════════════════════════════════════════════════════
+   AUTO LOOKUP  (URL-param mode)
+══════════════════════════════════════════════════════════════ */
+async function autoLookup(staffNo) {
   try {
-    const rows = await fetchRows();
-    const match = findRow(rows, staffNumber);
+    const rows  = await fetchRows();
+    const match = findRow(rows, staffNo);
+    hideLoading();
     renderResult(match);
+    document.getElementById('qRef').textContent =
+      'REF: QRY-' + Date.now().toString(36).toUpperCase();
   } catch (err) {
     console.error('[NISO]', err);
+    hideLoading();
     showAlert('Cannot reach the verification server. Please check your API configuration and network.');
-    document.getElementById('resultBox').innerHTML = '';
-  } finally {
-    S.busy = false;
   }
 }
 
+/* ══════════════════════════════════════════════════════════════
+   MANUAL VERIFY HANDLER  (fallback form mode)
+══════════════════════════════════════════════════════════════ */
+async function doVerify() {
+  if (S.busy) return;
+  const val = document.getElementById('staffInp').value.trim();
+  clearAlert(); clearResult();
+  if (!val) {
+    showAlert('Please enter a Staff Number before proceeding.');
+    document.getElementById('staffInp').focus();
+    return;
+  }
+  setBusy(true);
+  try {
+    const rows  = await fetchRows();
+    const match = findRow(rows, val);
+    renderResult(match);
+    document.getElementById('qRef').textContent =
+      'REF: QRY-' + Date.now().toString(36).toUpperCase();
+  } catch (err) {
+    console.error('[NISO]', err);
+    showAlert('Cannot reach the verification server. Please check your API configuration and network.');
+  } finally {
+    setBusy(false);
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   FETCH ALL RECORDS FROM APPSHEET
+══════════════════════════════════════════════════════════════ */
 async function fetchRows() {
   if (S.cache) return S.cache;
-  
   const res = await fetch(ENDPOINT, {
-    method: 'POST',
-    headers: {
-      'ApplicationAccessKey': CFG.API_KEY,
-      'Content-Type': 'application/json',
+    method  : 'POST',
+    headers : {
+      'ApplicationAccessKey' : CFG.API_KEY,
+      'Content-Type'         : 'application/json',
     },
     body: JSON.stringify({
-      Action: 'Find',
-      Properties: { Locale: 'en-US', Timezone: 'UTC', Selector: `Filter(${CFG.TABLE}, true)` },
+      Action     : 'Find',
+      Properties : {
+        Locale   : 'en-US',
+        Timezone : 'UTC',
+        Selector : `Filter(${CFG.TABLE}, true)`,
+      },
       Rows: [],
     }),
   });
-  
   if (!res.ok) throw new Error('HTTP ' + res.status);
-  
   const data = await res.json();
-  const rows = Array.isArray(data) ? data : Array.isArray(data.rows) ? data.rows : Array.isArray(data.Records) ? data.Records : [];
-  
+  const rows =
+    Array.isArray(data)           ? data        :
+    Array.isArray(data.rows)      ? data.rows   :
+    Array.isArray(data.Records)   ? data.Records: [];
   if (rows.length) {
     console.log('[NISO] ✅ Records fetched:', rows.length);
-    console.log('[NISO] Column names:', Object.keys(rows[0]));
+    console.log('[NISO] Column names      :', Object.keys(rows[0]));
+    console.log('[NISO] First record      :', rows[0]);
   } else {
     console.warn('[NISO] ⚠ No records returned.');
   }
-  
   S.cache = rows;
   return rows;
 }
 
+/* ══════════════════════════════════════════════════════════════
+   SEARCH — match staff number (case-insensitive)
+══════════════════════════════════════════════════════════════ */
 function findRow(rows, query) {
   const Q = query.toUpperCase().trim();
   return rows.find(r => {
-    const v = r['STAFF NO'] || r['Staff No'] || r['StaffNo'] || r['staff_no'] || r['staffNo'] || r['Staff Number'] || r['STAFF NUMBER'] || r['ID'] || r['id'] || '';
+    const v =
+      r['STAFF NO']     || r['Staff No']     || r['StaffNo']     ||
+      r['staff_no']     || r['staffNo']       ||
+      r['Staff Number'] || r['STAFF NUMBER']  ||
+      r['ID']           || r['id']            || '';
     return String(v).toUpperCase().trim() === Q;
   }) || null;
 }
 
+/* ══════════════════════════════════════════════════════════════
+   IMAGE URL RESOLVER
+══════════════════════════════════════════════════════════════ */
 function resolveImageUrl(raw) {
   if (!raw || !raw.trim() || raw === 'N/A') return '';
   const s = raw.trim();
@@ -376,51 +869,85 @@ function resolveImageUrl(raw) {
   return '';
 }
 
+/* ══════════════════════════════════════════════════════════════
+   RENDER RESULTS
+══════════════════════════════════════════════════════════════ */
 function renderResult(staff) {
-  document.getElementById('resultBox').innerHTML = staff ? buildStaffCard(staff) : buildNotFound();
+  document.getElementById('resultBox').innerHTML =
+    staff ? buildStaffCard(staff) : buildNotFound();
   showResult();
 }
 
 function buildNotFound() {
-  return `<div class="nf-box" role="alert">
+  return `
+  <div class="nf-box" role="alert">
     <div class="nf-icon-wrap">
-      <svg width="29" height="29" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <svg width="29" height="29" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2.5"
+           stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="12" r="10"/>
         <line x1="15" y1="9" x2="9" y2="15"/>
-        <line x1="9" y1="9" x2="15" y2="15"/>
+        <line x1="9"  y1="9" x2="15" y2="15"/>
       </svg>
     </div>
     <div>
       <div class="nf-badge">
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="3"
+             stroke-linecap="round" stroke-linejoin="round">
           <line x1="18" y1="6" x2="6" y2="18"/>
-          <line x1="6" y1="6" x2="18" y2="18"/>
+          <line x1="6"  y1="6" x2="18" y2="18"/>
         </svg>
         Not A NISO Staff
       </div>
       <p class="nf-title">Identity Not Found</p>
-      <p class="nf-body">The Staff Number provided does not match any record in the NISO personnel database. Please verify the number or contact the Human Resources department.</p>
+      <p class="nf-body">
+        The Staff Number entered does not match any record in the NISO
+        personnel database. Please verify the number and try again, or
+        contact the Human Resources department for assistance.
+      </p>
     </div>
   </div>`;
 }
 
 function buildStaffCard(row) {
-  const name = esc(row['STAFF NAME'] || row['Staff Name'] || row['StaffName'] || 'N/A');
-  const sno = esc(row['STAFF NO'] || row['Staff No'] || row['StaffNo'] || 'N/A');
+  const name  = esc(row['STAFF NAME']  || row['Staff Name']  || row['StaffName']  || 'N/A');
+  const sno   = esc(row['STAFF NO']    || row['Staff No']    || row['StaffNo']    || 'N/A');
   const desig = esc(row['DESIGNATION'] || row['Designation'] || 'N/A');
-  const reg = esc(row['REGION'] || row['Region'] || 'N/A');
-  const nmail = esc(row['NISO MAIL'] || row['Niso Mail'] || 'N/A');
-  
-  const rawImg = row['PASSPORT'] || row['Passport'] || row['passport'] || row['Photo'] || row['PHOTO'] || row['photo'] || row['Image'] || row['IMAGE'] || row['image'] || row['Picture'] || row['PICTURE'] || row['Staff Photo'] || row['STAFF PHOTO'] || row['Passport URL'] || row['PASSPORT URL'] || row['Photo URL'] || row['PHOTO URL'] || '';
+  const reg   = esc(row['REGION']      || row['Region']      || 'N/A');
+  const nmail = esc(row['NISO MAIL']   || row['Niso Mail']   || 'N/A');
+  const rawImg =
+    row['PASSPORT']       || row['Passport']       || row['passport']       ||
+    row['Photo']          || row['PHOTO']          || row['photo']          ||
+    row['Image']          || row['IMAGE']          || row['image']          ||
+    row['Picture']        || row['PICTURE']        ||
+    row['Staff Photo']    || row['STAFF PHOTO']    ||
+    row['Passport URL']   || row['PASSPORT URL']   ||
+    row['Photo URL']      || row['PHOTO URL']      || '';
   const imgSrc = resolveImageUrl(String(rawImg));
-  const ts = new Intl.DateTimeFormat('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).format(new Date());
+  console.log('[NISO] Raw passport value  :', rawImg  || '(empty)');
+  console.log('[NISO] Resolved image src  :', imgSrc  || '(none)');
+  const ts  = new Intl.DateTimeFormat('en-GB', {
+    day: '2-digit', month: 'short', year: 'numeric',
+    hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false,
+  }).format(new Date());
   const uid = rnd6();
-  
-  const imgTag = imgSrc ? `<img class="pp-img" id="pimg_${uid}" src="${imgSrc}" alt="Passport photo of ${name}" crossorigin="anonymous" onload="ppLoad('${uid}')" onerror="ppFail('${uid}','${imgSrc.replace(/\\/g,'\\\\').replace(/'/g,"\\'")}')">` : '';
+  const imgTag = imgSrc
+    ? `<img
+         class="pp-img"
+         id="pimg_${uid}"
+         src="${imgSrc}"
+         alt="Passport photo of ${name}"
+         crossorigin="anonymous"
+         onload="ppLoad('${uid}')"
+         onerror="ppFail('${uid}','${imgSrc.replace(/\\/g,'\\\\').replace(/'/g,"\\'")}')"
+       >`
+    : '';
   const fallbackStyle = imgSrc ? '' : 'style="display:flex"';
-  const fallbackMsg = imgSrc ? 'Image could not be loaded' : 'No image URL in record';
-  
-  return `<div class="staff-card" role="region" aria-label="Staff identity record">
+  const fallbackMsg   = imgSrc ? 'Image could not be loaded' : 'No image URL in record';
+
+  return `
+  <div class="staff-card" role="region" aria-label="Staff identity record">
     <div class="sc-head">
       <div class="sc-head-l">
         <span class="sc-eye">Identity Record — Confirmed</span>
@@ -428,7 +955,9 @@ function buildStaffCard(row) {
       </div>
       <div class="v-badge">
         <div class="v-badge-ico">
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="3.5"
+               stroke-linecap="round" stroke-linejoin="round">
             <polyline points="20 6 9 17 4 12"/>
           </svg>
         </div>
@@ -441,7 +970,9 @@ function buildStaffCard(row) {
           <div class="pp-skel" id="skel_${uid}"></div>
           ${imgTag}
           <div class="pp-fallback" id="fall_${uid}" ${fallbackStyle}>
-            <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+            <svg width="42" height="42" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="1.2"
+                 stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="8" r="4"/>
               <path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6"/>
             </svg>
@@ -475,7 +1006,7 @@ function buildStaffCard(row) {
             <div class="df-val">${reg}</div>
           </div>
           <div class="df">
-            <div class="df-lbl">NISO MAIL</div>
+            <div class="df-lbl">NISO Mail</div>
             <div class="df-val">${nmail}</div>
           </div>
           <div class="df">
@@ -495,56 +1026,90 @@ function buildStaffCard(row) {
   </div>`;
 }
 
+/* ══════════════════════════════════════════════════════════════
+   PASSPORT IMAGE CALLBACKS
+══════════════════════════════════════════════════════════════ */
 function ppLoad(uid) {
-  const img = document.getElementById('pimg_' + uid);
-  const skel = document.getElementById('skel_' + uid);
-  const fall = document.getElementById('fall_' + uid);
-  if (img) img.classList.add('loaded');
+  const img  = gi('pimg_' + uid);
+  const skel = gi('skel_' + uid);
+  const fall = gi('fall_' + uid);
+  if (img)  img.classList.add('loaded');
   if (skel) skel.classList.add('gone');
   if (fall) fall.style.display = 'none';
 }
-
 function ppFail(uid, attemptedUrl) {
-  const img = document.getElementById('pimg_' + uid);
-  const skel = document.getElementById('skel_' + uid);
-  const fall = document.getElementById('fall_' + uid);
-  const fsub = document.getElementById('fsub_' + uid);
-  const hint = document.getElementById('hint_' + uid);
-  const hintBody = document.getElementById('hintBody_' + uid);
-  
-  if (img) img.style.display = 'none';
+  const img      = gi('pimg_'     + uid);
+  const skel     = gi('skel_'     + uid);
+  const fall     = gi('fall_'     + uid);
+  const fsub     = gi('fsub_'     + uid);
+  const hint     = gi('hint_'     + uid);
+  const hintBody = gi('hintBody_' + uid);
+  if (img)  img.style.display  = 'none';
   if (skel) skel.classList.add('gone');
   if (fall) fall.style.display = 'flex';
-  
   const isGitHub = attemptedUrl.includes('githubusercontent') || attemptedUrl.includes('github.com');
-  const isDrive = attemptedUrl.includes('drive.google.com');
-  
+  const isDrive  = attemptedUrl.includes('drive.google.com');
   let hintHtml = '';
   if (isGitHub) {
     if (fsub) fsub.textContent = 'GitHub image failed';
-    hintHtml = `Make sure your GitHub repository is set to <strong>Public</strong>.<br>Use a <strong>raw</strong> link: <code>https://raw.githubusercontent.com/USER/REPO/main/photo.jpg</code>`;
+    hintHtml = `Make sure your GitHub repository is set to <strong>Public</strong>.<br>
+      Use a <strong>raw</strong> link:
+      <code>https://raw.githubusercontent.com/USER/REPO/main/photo.jpg</code>`;
   } else if (isDrive) {
     if (fsub) fsub.textContent = 'Google Drive image failed';
-    hintHtml = `The file must be shared as <strong>"Anyone with the link"</strong>.<br>Use format: <code>https://drive.google.com/uc?export=view&amp;id=FILE_ID</code>`;
+    hintHtml = `The file must be shared as <strong>"Anyone with the link"</strong>.<br>
+      Use format: <code>https://drive.google.com/uc?export=view&amp;id=FILE_ID</code>`;
   } else {
     if (fsub) fsub.textContent = 'Image failed to load';
-    hintHtml = `Tried: <code>${attemptedUrl.substring(0, 60)}...</code><br><strong>Recommended:</strong> Use a GitHub raw URL.`;
+    hintHtml = `Tried: <code>${attemptedUrl.substring(0, 60)}...</code><br>
+      <strong>Recommended:</strong> Use a GitHub raw URL.`;
   }
-  
-  if (hint) hint.classList.add('show');
+  if (hint)     hint.classList.add('show');
   if (hintBody) hintBody.innerHTML = hintHtml;
+  console.warn('[NISO] ❌ Passport image failed. URL tried:', attemptedUrl);
 }
 
+/* ══════════════════════════════════════════════════════════════
+   UI HELPERS
+══════════════════════════════════════════════════════════════ */
+function showLoading(staffNo) {
+  gi('loadingStaffNo').textContent = staffNo.toUpperCase();
+  gi('loadingState').classList.add('show');
+}
+function hideLoading() {
+  gi('loadingState').classList.remove('show');
+}
+function setBusy(on) {
+  S.busy = on;
+  const btn = gi('vBtn');
+  if (!btn) return;
+  btn.disabled = on;
+  btn.classList.toggle('loading', on);
+}
 function showResult() {
-  const r = document.getElementById('resultBox');
+  const r = gi('resultBox');
   r.classList.add('show');
   setTimeout(() => r.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
 }
-function clearResult() { document.getElementById('resultBox').classList.remove('show'); document.getElementById('resultBox').innerHTML = ''; }
-function showAlert(msg) { document.getElementById('alertMsg').textContent = msg; document.getElementById('alertBox').classList.add('show'); }
-function clearAlert() { document.getElementById('alertBox').classList.remove('show'); }
-function rnd6() { return Math.random().toString(36).substring(2, 8).toUpperCase(); }
-function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+function clearResult() {
+  const r = gi('resultBox');
+  r.classList.remove('show');
+  r.innerHTML = '';
+}
+function showAlert(msg) {
+  gi('alertMsg').textContent = msg;
+  gi('alertBox').classList.add('show');
+}
+function clearAlert() {
+  gi('alertBox').classList.remove('show');
+}
+function gi(id)  { return document.getElementById(id); }
+function rnd6()  { return Math.random().toString(36).substring(2, 8).toUpperCase(); }
+function esc(s)  {
+  return String(s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
 </script>
 </body>
 </html>
